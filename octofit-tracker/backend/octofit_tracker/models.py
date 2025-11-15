@@ -1,5 +1,6 @@
 from djongo import models
 
+
 class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
     class Meta:
@@ -8,12 +9,12 @@ class Team(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members')
+    team_id = models.CharField(max_length=24)  # Store ObjectId as string
     class Meta:
         db_table = 'users'
 
 class Activity(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='activities')
+    user_id = models.CharField(max_length=24)  # Store ObjectId as string
     type = models.CharField(max_length=100)
     duration = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -28,7 +29,7 @@ class Workout(models.Model):
         db_table = 'workouts'
 
 class Leaderboard(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team_id = models.CharField(max_length=24)  # Store ObjectId as string
     points = models.IntegerField(default=0)
     class Meta:
         db_table = 'leaderboard'
